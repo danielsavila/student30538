@@ -1,0 +1,338 @@
+---
+title: "Problem Set 2: Parking Tickets"
+author: "Daniel Avila"
+date: "10-8-24"
+format: html
+---
+
+1. “This submission is my work alone and complies with the 30538 integrity policy.” Add
+ your initials to indicate your agreement: **DA**
+ 2. “I have uploaded the names of anyone I worked with on the problem set here” **DA**
+ (2 point)
+ 3. Late coins used this pset: **0** Late coins left after submission: **3**
+ 4. Knit your ps2.qmd as an html document and print to a pdf to make ps2.pdf.
+ • The PDF should not be more than 25 pages. Use head() and re-size figures when
+ appropriate.
+ 5. Push ps2.qmd and ps2.pdf to your github repo. It is fine to use Github Desktop.
+ 6. Submit ps2.pdf via Gradescope (8 points)
+ 7. Tag your submission in Gradescope
+
+```{python}
+import pandas as pd
+import numpy as np
+import os
+import altair as alt
+import datetime as dt
+
+path = "c:/Users/danie/Documents/GitHub/ppha30538_fall2024/problem_sets/ps2/data"
+os.chdir(path)
+
+df = pd.read_csv("parking_tickets_one_percent.csv")
+
+```
+
+
+ **Data cleaning continued**
+ 1. . For each column, how many rows are NA? Write a function which returns a two column data frame where each row is a variable, the first column of the data frame is the name of each variable, and the second column of the data frame is the number of times thatthe column is NA. Test your function. Then, report the results applied to the parking tickets data frame. There are several ways to do this, but we haven’t covered them yet in class, so you will need to work independently to set this up.
+
+ ```{python}
+df.head()
+ ```
+
+```{python}
+def data_cleaning(data):
+    columns = data.columns
+    na_values = []
+
+    for i in range(len(data.columns)):
+        series = data.iloc[:, i].isna()
+        true = len(series[series == True])
+        na_values.append(true)
+
+    output = pd.DataFrame(na_values, columns).reset_index()
+    output.columns = ["column names", "NA values"]
+    return output
+
+data_cleaning(df)
+```
+
+ 2. Three variables are missing much more frequently than the others. Why? (Hint: look at some rows and read the data dictionary written by ProPublica)
+
+The three variables that are displaying the most missingness are 1) zipcode, 2) notice level, and 3) hearing_disposition. 
+
+```{python}
+series1 = df["zipcode"].isna()
+series1 = series1.loc[series1 == True].reset_index()
+small_list1 = list(series1.loc[:, "index"])
+one = df.loc[small_list1]
+v_one = one["violation_description"].value_counts()
+
+series2 = df["notice_level"].isna()
+series2 = series2.loc[series2 == True].reset_index()
+small_list2 = list(series2.loc[:, "index"])
+two = df.loc[small_list2]
+v_two = two["violation_description"].value_counts()
+
+series3 = df["hearing_disposition"].isna()
+series3 = series3.loc[series3 == True].reset_index()
+small_list3 = list(series3.loc[:, "index"])
+three = df.loc[small_list3]
+v_three = three["violation_description"].value_counts()
+
+print(v_three.head())
+print(v_two.head())
+print(v_one.head())
+```
+
+The zipcode variable indicates the zipcode associated with the vehicle registration. This is an assumption, but I would guess that if the vehicle does not have an up to date registration. Therefore that would explain the lack of zipcode.
+According to the ProPublica article for notice_level, if there is no data, then that would indicate that no notice was sent to the vehicle owner.
+For the hearing_disposition, if the field is blank, then that would indicate that the ticket was not contested. 
+
+
+ 3. Some of the other articles on the propublica website discuss an increase in the dollar amount of the ticket for not having a city sticker. What was the old violation code and what is the new violation code?
+
+```{python}
+#identifying what were the old codes by checking the value amounts
+#in one of the articles, they mentioned that one of the value amounts was raised to 200 dollars. 
+sticker = df[(df["violation_description"] == "NO CITY STICKER OR IMPROPER DISPLAY") | (df["violation_description"] == "NO CITY STICKER VEHICLE UNDER/EQUAL TO 16,000 LBS.")]
+sticker["violation_code"].value_counts()
+```
+
+The old code was **0964125**, and the new code was designated as **0964125B**
+
+ 4. How much was the cost of an initial offense under each code? (You can ignore the ticket for a missing city sticker on vehicles over 16,000 pounds.)
+```{python}
+sticker["fine_level1_amount"].value_counts()
+```
+
+The cost of an initial offense was $120, and was then raised to $200.
+
+**Revenue increase from “missing city sticker” tickets (20 Points)**
+
+1. Using pandas, create a new value for violation codes which combines the two codes that
+you found in the previous question. Again using pandas, collapse the data to capture
+the number of missing city sticker tickets by month. Then, using Altair, plot the number
+of tickets over time.
+
+```{python}
+#replacing values
+new_code = "111111"
+new_df = df
+new_df = new_df.replace(("0964125B", "0964125"), new_code)
+
+#collapsing data
+missing_stickers = new_df[new_df["violation_code"] == new_code]
+missing_stickers.loc[:,"num"] = 1
+missing_stickers.loc[:, "yearmonth"] = pd.to_datetime(missing_stickers["issue_date"])
+missing_stickers["yearmonth"] = missing_stickers["yearmonth"].dt.strftime("%Y - %m")
+
+grouped = missing_stickers.groupby("yearmonth")["num"].sum().reset_index()
+
+alt.Chart(grouped).mark_bar(
+).transform_window(
+    cumulative_sum = "sum(num)"
+).encode(
+    alt.X("yearmonth:O"),
+    alt.Y("cumulative_sum:Q")
+)
+
+```
+
+2. Suppose that your reader wants to be able to use the plot to deduce when the price
+increase occurred. Add frequent or custom date labels on the x-axis of your plot such
+that the date of the price increase is readily apparent. We haven’t covered Altair’s
+date labeling features in class so you’ll first need to find the relevant help page in the
+documentation. Which help page did you use?
+```{python}
+# city sticker increase happened in 2012
+# https://interactive.wbez.org/citystickertickets:~:text=During%20negotiations%20for%20Chicago's%202012,rose%20from%20%24120%20to%20%24200.
+
+# used this help page from altair documentation (to create the single value)
+# https://altair-viz.github.io/user_guide/encodings/index.html
+
+
+grouped["yearmonth"] = pd.to_datetime(grouped["yearmonth"])
+grouped["year"] = grouped["yearmonth"].dt.strftime("%Y").astype(int)
+grouped["yearmonth"] = grouped["yearmonth"].dt.strftime("%Y - %m")
+grouped["pre_post_increase"] = ((grouped["year"]) >= 2012).astype(int)
+grouped["pre_post_increase"] = grouped["pre_post_increase"].replace({0:"Pre Increase", 1:"Post Increase"})
+
+tickets_graph = alt.Chart(grouped).mark_bar(
+).transform_window(
+    cumulative_sum = "sum(num)",).encode(
+    alt.X("yearmonth:O"
+    ),
+    alt.Y("cumulative_sum:Q"),
+    color = alt.Color("pre_post_increase:N")
+)
+
+tickets_graph
+```
+
+3. The City Clerk said the price increase would raise revenue by $16 million per year. For
+now, ignore the fact that many tickets are not paid and assume that the number of tickets
+issued is the same before and after the policy change. Using only the data available in
+the calendar year prior to the increase, how much of a revenue increase should they have
+projected? Remember that you are working with a one percent sample of the data.
+Assume that the number of tickets of this type issued afterward would be constant a
+you can assume that there are no late fees or collection fees, so a ticket is either paid at
+its face value or is never paid.
+
+```{python}
+
+#need to check that each year has a relativley equal distribution 
+# of tickets per year in the 1% dataset
+missing_stickers_copy = missing_stickers.copy()
+missing_stickers_copy["issue_date"] = pd.to_datetime(missing_stickers_copy["issue_date"])
+df_names = []
+df_values = []
+
+for i in range(2007, 2019):
+    filtered_data = df_copy[df_copy["issue_date"].dt.year == i]
+    df_values.append(filtered_data.shape[0])
+    df_names.append(f"{i}")
+
+tickets_per_year = pd.DataFrame({
+    "year": df_names,
+    "number_of_tickets": df_values
+})
+
+print(tickets_per_year)
+
+print((193300 * 200) - (193300 * 120))
+
+```
+
+There were 1933 tickets issued in 2011 in our 1% dataset, which is roughly 8.66% of the dataset. Rounding up, we can say that there are approximately ~193,300 tickets per year, and at 200$ per ticket, we get a projected increase of $15,464,000.
+
+
+4. What happened to repayment rates (percentage of tickets issued that had payments
+made) on this type of ticket in the calendar year after the price increase went into effect?
+Suppose for a moment that the number of tickets issued was unchanged after the price
+increase. Using the new repayment rates in the year after the price increase occurred,
+what would the change in revenue have been? 
+
+```{python}
+df_2011 = missing_stickers_copy[missing_stickers_copy["issue_date"].dt.year == 2011]
+df_2013 = missing_stickers_copy[missing_stickers_copy["issue_date"].dt.year == 2013]
+df_2011["ticket_queue"] = df_2011["ticket_queue"].astype(str)
+
+
+repayment_2011 = round((df_2011[df_2011["ticket_queue"] != "Paid"].shape[0] / df_2011.shape[0] * 100), 2)
+
+repayment_2013 = round((df_2013[df_2013["ticket_queue"] != "Paid"].shape[0] / df_2013.shape[0] * 100), 2)
+
+print(f"2011 repayment rate: {repayment_2011}")
+print(f"2013 repayment rate: {repayment_2013}")
+print(f"percentage point change: {round(repayment_2011 - repayment_2013, 2)}")
+
+print(f"revenue, with 2011 tickets with 2013 repayment rates: {round(1933 * (repayment_2013 / 100) * 200)}") 
+
+```
+
+
+5. Make a plot with the repayment rates on “missing city sticker” tickets and a vertical line
+at when the new policy was introduced. Interpret.
+
+```{python}
+
+# finding the repayment rates for each year with the following function
+# repayment rate/year  = (# of paid missing city stickers in a given year) / (# of missing city stickers in a given year)
+
+repayment_rate_list = []
+for i in range(len(missing_stickers_copy["issue_date"].dt.year.unique())):
+    paid_year_df = missing_stickers_copy[(missing_stickers_copy["issue_date"].dt.year == (2007 + i)) & (missing_stickers_copy["ticket_queue"] == "Paid")]
+    year_df = missing_stickers_copy[missing_stickers_copy["issue_date"].dt.year == (2007+i)]
+    value = round(paid_year_df.shape[0] / year_df.shape[0], 2)
+    repayment_rate_list.append(value)
+
+repayment_rate_list
+year_list = list(missing_stickers_copy["issue_date"].dt.year.unique())
+
+#creating the dataframe from the two lists and graphing
+rr_df = pd.DataFrame(year_list, repayment_rate_list).reset_index()
+rr_df.columns = ["repayment_rate", "year"]
+
+
+chart = alt.Chart(rr_df).mark_point().encode(
+    alt.X("year:Q", scale = alt.Scale(domain = [2005, 2019])),
+    alt.Y("repayment_rate:Q")
+)
+
+rule = alt.Chart().mark_rule().encode(
+    x = alt.datum(2012)
+)
+
+chart + rule
+
+```
+
+6. Suppose that the City Clerk were committed to getting more revenue from tickets. What
+three violation types would you as an analyst have recommended they increase the price
+of? Consider both the number of tickets issued for each violation type and the repayment
+rate for each violation type. You may assume there is no behavioral response to price
+changes (ie. people continue to commit violations at the same rate and repay at the same
+rate). Make a plot to support your argument and explain in writing why it supports
+your argument.
+Headlines and sub-messages (20 points)
+
+```{python}
+groupby = df.groupby(df["violation_code"])
+```
+
+**2**
+1. The City Clerk has now begun to wonder... maybe raising ticket prices will lead to a
+decline in repayment rates after all. Make a data frame where each row is a violation
+description, the fraction of time that the ticket is paid, and the average level 1 fine. Sort
+this dataframe based on how many total tickets of each type have been issued. Print the
+rows for the 5 most common violation descriptions.
+
+
+2. Make a scatter plot which shows the relationship between fine amount and the fraction
+of tickets that are paid. Focus only on violations that appear at least 100 times. There
+will be one outlier with a high fine and you can exclude that ticket type from the plot.
+Then make two other plots which show the same relationship in different ways. For all
+three plots, write out what are the headlines and what are sub-messages.
+
+
+3. The City Clerk doesn’t understand regressions and only has time to look at one plot.
+Which plot are you going to bring to them and why?
+Understanding the structure of the data and summarizing it (Lecture 5, 20
+Points)
+
+**3** 
+1. Most violation types double in price if unpaid.
+• Does this hold for all violations?
+• If not, find all violations with at least 100 citations that do not double. How much
+does each ticket increase if unpaid?
+
+
+2. Many datasets implicitly contain information about how a case can progress. Draw a di-
+agram explaining the process of moving between the different values of notice_level (if
+you draw it on paper, take a picture and include the image in your write up). Draw a sec-
+ond diagram explaining the different values of ticket_queue. If someone contests their
+ticket and is found not liable, what happens to notice_level and to ticket_queue?
+Include this in your tree drawings above.
+
+
+3. Go back to your scatter plot from the previous section. We want to add labels to each
+dot (which conveniently you constructed in the previous step). Implement this in two
+ways: (a) label every dot with adjacent text or (b) put the text in a legend. Either
+way, you will find the same problem – there are too many labels and the plot is illegible.
+Revise the plots. First, do this the easy way, which is to pick the ten most commonly
+used violation descriptions and mark all the other dots as “Other”. Second, for (b), try
+to construct meaningful categories by marking violation descriptions which sound similar
+with a common label and a common color.
+
+**Extra Credit (max 5 points)**
+1. Which violation codes, if any, are associated with multiple violation descriptions? In
+these cases, using pandas, create a new column which records the most common violation
+description associated with this code. If there are any with multiple descriptions print
+the three codes with the most observations.
+
+
+2. Above you made a diagram on paper to show how a case can progress. Al-
+though Vega-Lite cannot support tree layout plots like this, Vega can!. Make the
+digital version of your diagram using Vega. You can use the (online Vega con-
+sole](https://vega.github.io/editor/#/custom/vega). Submit your JSON as a separate
+file and submit your plot alongside your pset as a .png.
