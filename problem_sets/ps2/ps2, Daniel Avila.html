@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Daniel Avila">
+<meta name="dcterms.date" content="2024-10-08">
+
+<title>Problem Set 2: Parking Tickets</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="ps2, Daniel Avila_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ps2, Daniel Avila_files/libs/quarto-html/quarto.js"></script>
+<script src="ps2, Daniel Avila_files/libs/quarto-html/popper.min.js"></script>
+<script src="ps2, Daniel Avila_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ps2, Daniel Avila_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ps2, Daniel Avila_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ps2, Daniel Avila_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ps2, Daniel Avila_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ps2, Daniel Avila_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ps2, Daniel Avila_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Problem Set 2: Parking Tickets</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Daniel Avila </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 8, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<ol type="1">
+<li>“This submission is my work alone and complies with the 30538 integrity policy.” Add your initials to indicate your agreement: <strong>DA</strong></li>
+<li>“I have uploaded the names of anyone I worked with on the problem set here” <strong>DA</strong> (2 point)</li>
+<li>Late coins used this pset: <strong>0</strong> Late coins left after submission: <strong>3</strong></li>
+<li>Knit your ps2.qmd as an html document and print to a pdf to make ps2.pdf. • The PDF should not be more than 25 pages. Use head() and re-size figures when appropriate.</li>
+<li>Push ps2.qmd and ps2.pdf to your github repo. It is fine to use Github Desktop.</li>
+<li>Submit ps2.pdf via Gradescope (8 points)</li>
+<li>Tag your submission in Gradescope</li>
+</ol>
+<div id="e83613ac" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> altair <span class="im">as</span> alt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> datetime <span class="im">as</span> dt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"c:/Users/danie/Documents/GitHub/student30538/problem_sets/ps2/data"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>os.chdir(path)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"parking_tickets_one_percent.csv"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pd.options.mode.chained_assignment <span class="op">=</span> <span class="va">None</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\danie\AppData\Local\Temp\ipykernel_20316\4256462006.py:10: DtypeWarning: Columns (7) have mixed types. Specify dtype option on import or set low_memory=False.
+  df = pd.read_csv("parking_tickets_one_percent.csv")</code></pre>
+</div>
+</div>
+<p><strong>Data cleaning continued</strong> 1. . For each column, how many rows are NA? Write a function which returns a two column data frame where each row is a variable, the first column of the data frame is the name of each variable, and the second column of the data frame is the number of times thatthe column is NA. Test your function. Then, report the results applied to the parking tickets data frame. There are several ways to do this, but we haven’t covered them yet in class, so you will need to work independently to set this up.</p>
+<div id="f0724d04" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> data_cleaning(data):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    columns <span class="op">=</span> data.columns</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    na_values <span class="op">=</span> []</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data.columns)):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        series <span class="op">=</span> data.iloc[:, i].isna()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        true <span class="op">=</span> <span class="bu">len</span>(series[series <span class="op">==</span> <span class="va">True</span>])</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        na_values.append(true)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> pd.DataFrame(na_values, columns).reset_index()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    output.columns <span class="op">=</span> [<span class="st">"column names"</span>, <span class="st">"NA values"</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>data_cleaning(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">column names</th>
+<th data-quarto-table-cell-role="th">NA values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>Unnamed: 0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>ticket_number</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>issue_date</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>violation_location</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>license_plate_number</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>license_plate_state</td>
+<td>97</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">6</td>
+<td>license_plate_type</td>
+<td>2054</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7</td>
+<td>zipcode</td>
+<td>54115</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">8</td>
+<td>violation_code</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">9</td>
+<td>violation_description</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10</td>
+<td>unit</td>
+<td>29</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">11</td>
+<td>unit_description</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">12</td>
+<td>vehicle_make</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">13</td>
+<td>fine_level1_amount</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">14</td>
+<td>fine_level2_amount</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">15</td>
+<td>current_amount_due</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">16</td>
+<td>total_payments</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17</td>
+<td>ticket_queue</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">18</td>
+<td>ticket_queue_date</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">19</td>
+<td>notice_level</td>
+<td>84068</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">20</td>
+<td>hearing_disposition</td>
+<td>259899</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">21</td>
+<td>notice_number</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">22</td>
+<td>officer</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">23</td>
+<td>address</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Three variables are missing much more frequently than the others. Why? (Hint: look at some rows and read the data dictionary written by ProPublica)</li>
+</ol>
+<p>The three variables that are displaying the most missingness are 1) zipcode, 2) notice level, and 3) hearing_disposition.</p>
+<div id="eba447e4" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>series1 <span class="op">=</span> df[<span class="st">"zipcode"</span>].isna()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>series1 <span class="op">=</span> series1.loc[series1 <span class="op">==</span> <span class="va">True</span>].reset_index()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>small_list1 <span class="op">=</span> <span class="bu">list</span>(series1.loc[:, <span class="st">"index"</span>])</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> df.loc[small_list1]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>v_one <span class="op">=</span> one[<span class="st">"violation_description"</span>].value_counts()</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>series2 <span class="op">=</span> df[<span class="st">"notice_level"</span>].isna()</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>series2 <span class="op">=</span> series2.loc[series2 <span class="op">==</span> <span class="va">True</span>].reset_index()</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>small_list2 <span class="op">=</span> <span class="bu">list</span>(series2.loc[:, <span class="st">"index"</span>])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>two <span class="op">=</span> df.loc[small_list2]</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>v_two <span class="op">=</span> two[<span class="st">"violation_description"</span>].value_counts()</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>series3 <span class="op">=</span> df[<span class="st">"hearing_disposition"</span>].isna()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>series3 <span class="op">=</span> series3.loc[series3 <span class="op">==</span> <span class="va">True</span>].reset_index()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>small_list3 <span class="op">=</span> <span class="bu">list</span>(series3.loc[:, <span class="st">"index"</span>])</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>three <span class="op">=</span> df.loc[small_list3]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>v_three <span class="op">=</span> three[<span class="st">"violation_description"</span>].value_counts()</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"hearing_disposition"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(v_three.head())</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"notice_level"</span>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(v_two.head())</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"zipcode"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(v_one.head())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>hearing_disposition
+violation_description
+EXPIRED PLATES OR TEMPORARY REGISTRATION    39769
+STREET CLEANING                             27177
+RESIDENTIAL PERMIT PARKING                  21471
+EXP. METER NON-CENTRAL BUSINESS DISTRICT    19218
+PARKING/STANDING PROHIBITED ANYTIME         17862
+Name: count, dtype: int64
+notice_level
+violation_description
+EXPIRED PLATES OR TEMPORARY REGISTRATION    11022
+STREET CLEANING                              8935
+RESIDENTIAL PERMIT PARKING                   7255
+EXP. METER NON-CENTRAL BUSINESS DISTRICT     6661
+REAR AND FRONT PLATE REQUIRED                6155
+Name: count, dtype: int64
+zipcode
+violation_description
+EXPIRED PLATES OR TEMPORARY REGISTRATION    6795
+STREET CLEANING                             5896
+REAR AND FRONT PLATE REQUIRED               4730
+RESIDENTIAL PERMIT PARKING                  4694
+PARKING/STANDING PROHIBITED ANYTIME         3897
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>The zipcode variable indicates the zipcode associated with the vehicle registration. I would guess that if the vehicle does not have an up to date registration, is missing the registration sticker, or missing both registration sticker and plates, then when the officer writes the citation, there is no way for the officer to collect information on the zipcode that the car is registered to. So in these cases, there is a likelihood that the officer was not able to find enough identifying information to get a zipcode.</p>
+<p>According to the ProPublica article for notice_level, if there is no data, then that would indicate that no notice was sent to the vehicle owner. Therefore, these citations were not sent to the vehicle owner.</p>
+<p>For the hearing_disposition, if the field is blank, then that would indicate that the ticket was not contested. Therefore for these fields, the vehicle owners did not contest the citation or there is no record of the citation.</p>
+<ol start="3" type="1">
+<li>Some of the other articles on the propublica website discuss an increase in the dollar amount of the ticket for not having a city sticker. What was the old violation code and what is the new violation code?</li>
+</ol>
+<div id="c233ff64" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#identifying what were the old codes by checking the value amounts</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#in one of the articles, they mentioned that one of the value amounts was raised to 200 dollars. </span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sticker <span class="op">=</span> df[(df[<span class="st">"violation_description"</span>] <span class="op">==</span> <span class="st">"NO CITY STICKER OR IMPROPER DISPLAY"</span>) <span class="op">|</span> (df[<span class="st">"violation_description"</span>] <span class="op">==</span> <span class="st">"NO CITY STICKER VEHICLE UNDER/EQUAL TO 16,000 LBS."</span>)]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sticker[<span class="st">"violation_code"</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>violation_code
+0964125B    14246
+0964125     10758
+0976170        15
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>The old code was <strong>0964125</strong>, and the new code was designated as <strong>0964125B</strong>. Not sure what the other value with 15 citations is.</p>
+<ol start="4" type="1">
+<li>How much was the cost of an initial offense under each code? (You can ignore the ticket for a missing city sticker on vehicles over 16,000 pounds.)</li>
+</ol>
+<div id="b6147f97" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sticker[<span class="st">"fine_level1_amount"</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>fine_level1_amount
+200    14246
+120    10773
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<p>The cost of an initial offense was $120, and was then raised to $200.</p>
+<p><strong>Revenue increase from “missing city sticker” tickets (20 Points)</strong></p>
+<ol type="1">
+<li>Using pandas, create a new value for violation codes which combines the two codes that you found in the previous question. Again using pandas, collapse the data to capture the number of missing city sticker tickets by month. Then, using Altair, plot the number of tickets over time.</li>
+</ol>
+<div id="d33b290c" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#replacing values</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>new_code <span class="op">=</span> <span class="st">"111111"</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>new_df <span class="op">=</span> df</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>new_df <span class="op">=</span> new_df.replace((<span class="st">"0964125B"</span>, <span class="st">"0964125"</span>), new_code)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#collapsing data</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>missing_stickers <span class="op">=</span> new_df[new_df[<span class="st">"violation_code"</span>] <span class="op">==</span> new_code]</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>missing_stickers.loc[:,<span class="st">"num"</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>missing_stickers.loc[:, <span class="st">"yearmonth"</span>] <span class="op">=</span> pd.to_datetime(missing_stickers[<span class="st">"issue_date"</span>])</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>missing_stickers[<span class="st">"yearmonth"</span>] <span class="op">=</span> missing_stickers[<span class="st">"yearmonth"</span>].dt.strftime(<span class="st">"%Y - %m"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>grouped <span class="op">=</span> missing_stickers.groupby(<span class="st">"yearmonth"</span>)[<span class="st">"num"</span>].<span class="bu">sum</span>().reset_index()</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>alt.Chart(grouped).mark_bar(</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>).transform_window(</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    cumulative_sum <span class="op">=</span> <span class="st">"sum(num)"</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>).encode(</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"yearmonth:O"</span>),</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"cumulative_sum:Q"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+
+<style>
+  #altair-viz-621cbecc6b89470f8e0c3f4206486719.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-621cbecc6b89470f8e0c3f4206486719.vega-embed details,
+  #altair-viz-621cbecc6b89470f8e0c3f4206486719.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-621cbecc6b89470f8e0c3f4206486719"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-621cbecc6b89470f8e0c3f4206486719") {
+      outputDiv = document.getElementById("altair-viz-621cbecc6b89470f8e0c3f4206486719");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-99b21e26822e21808a163c87bac96571"}, "mark": {"type": "bar"}, "encoding": {"x": {"field": "yearmonth", "type": "ordinal"}, "y": {"field": "cumulative_sum", "type": "quantitative"}}, "transform": [{"window": [{"op": "sum", "field": "num", "as": "cumulative_sum"}]}], "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-99b21e26822e21808a163c87bac96571": [{"yearmonth": "2007 - 01", "num": 160}, {"yearmonth": "2007 - 02", "num": 104}, {"yearmonth": "2007 - 03", "num": 161}, {"yearmonth": "2007 - 04", "num": 158}, {"yearmonth": "2007 - 05", "num": 126}, {"yearmonth": "2007 - 06", "num": 80}, {"yearmonth": "2007 - 07", "num": 399}, {"yearmonth": "2007 - 08", "num": 345}, {"yearmonth": "2007 - 09", "num": 224}, {"yearmonth": "2007 - 10", "num": 221}, {"yearmonth": "2007 - 11", "num": 168}, {"yearmonth": "2007 - 12", "num": 118}, {"yearmonth": "2008 - 01", "num": 132}, {"yearmonth": "2008 - 02", "num": 149}, {"yearmonth": "2008 - 03", "num": 192}, {"yearmonth": "2008 - 04", "num": 166}, {"yearmonth": "2008 - 05", "num": 139}, {"yearmonth": "2008 - 06", "num": 72}, {"yearmonth": "2008 - 07", "num": 382}, {"yearmonth": "2008 - 08", "num": 342}, {"yearmonth": "2008 - 09", "num": 213}, {"yearmonth": "2008 - 10", "num": 197}, {"yearmonth": "2008 - 11", "num": 148}, {"yearmonth": "2008 - 12", "num": 80}, {"yearmonth": "2009 - 01", "num": 81}, {"yearmonth": "2009 - 02", "num": 121}, {"yearmonth": "2009 - 03", "num": 171}, {"yearmonth": "2009 - 04", "num": 149}, {"yearmonth": "2009 - 05", "num": 132}, {"yearmonth": "2009 - 06", "num": 89}, {"yearmonth": "2009 - 07", "num": 392}, {"yearmonth": "2009 - 08", "num": 347}, {"yearmonth": "2009 - 09", "num": 211}, {"yearmonth": "2009 - 10", "num": 188}, {"yearmonth": "2009 - 11", "num": 170}, {"yearmonth": "2009 - 12", "num": 98}, {"yearmonth": "2010 - 01", "num": 156}, {"yearmonth": "2010 - 02", "num": 129}, {"yearmonth": "2010 - 03", "num": 153}, {"yearmonth": "2010 - 04", "num": 138}, {"yearmonth": "2010 - 05", "num": 140}, {"yearmonth": "2010 - 06", "num": 99}, {"yearmonth": "2010 - 07", "num": 26}, {"yearmonth": "2010 - 08", "num": 425}, {"yearmonth": "2010 - 09", "num": 237}, {"yearmonth": "2010 - 10", "num": 197}, {"yearmonth": "2010 - 11", "num": 168}, {"yearmonth": "2010 - 12", "num": 117}, {"yearmonth": "2011 - 01", "num": 153}, {"yearmonth": "2011 - 02", "num": 87}, {"yearmonth": "2011 - 03", "num": 147}, {"yearmonth": "2011 - 04", "num": 135}, {"yearmonth": "2011 - 05", "num": 134}, {"yearmonth": "2011 - 06", "num": 78}, {"yearmonth": "2011 - 07", "num": 317}, {"yearmonth": "2011 - 08", "num": 313}, {"yearmonth": "2011 - 09", "num": 171}, {"yearmonth": "2011 - 10", "num": 136}, {"yearmonth": "2011 - 11", "num": 139}, {"yearmonth": "2011 - 12", "num": 123}, {"yearmonth": "2012 - 01", "num": 114}, {"yearmonth": "2012 - 02", "num": 138}, {"yearmonth": "2012 - 03", "num": 181}, {"yearmonth": "2012 - 04", "num": 142}, {"yearmonth": "2012 - 05", "num": 115}, {"yearmonth": "2012 - 06", "num": 100}, {"yearmonth": "2012 - 07", "num": 414}, {"yearmonth": "2012 - 08", "num": 319}, {"yearmonth": "2012 - 09", "num": 179}, {"yearmonth": "2012 - 10", "num": 171}, {"yearmonth": "2012 - 11", "num": 157}, {"yearmonth": "2012 - 12", "num": 162}, {"yearmonth": "2013 - 01", "num": 196}, {"yearmonth": "2013 - 02", "num": 158}, {"yearmonth": "2013 - 03", "num": 199}, {"yearmonth": "2013 - 04", "num": 187}, {"yearmonth": "2013 - 05", "num": 179}, {"yearmonth": "2013 - 06", "num": 140}, {"yearmonth": "2013 - 07", "num": 499}, {"yearmonth": "2013 - 08", "num": 355}, {"yearmonth": "2013 - 09", "num": 221}, {"yearmonth": "2013 - 10", "num": 208}, {"yearmonth": "2013 - 11", "num": 127}, {"yearmonth": "2013 - 12", "num": 98}, {"yearmonth": "2014 - 01", "num": 100}, {"yearmonth": "2014 - 02", "num": 147}, {"yearmonth": "2014 - 03", "num": 155}, {"yearmonth": "2014 - 04", "num": 144}, {"yearmonth": "2014 - 05", "num": 178}, {"yearmonth": "2014 - 06", "num": 116}, {"yearmonth": "2014 - 07", "num": 267}, {"yearmonth": "2014 - 08", "num": 245}, {"yearmonth": "2014 - 09", "num": 178}, {"yearmonth": "2014 - 10", "num": 165}, {"yearmonth": "2014 - 11", "num": 153}, {"yearmonth": "2014 - 12", "num": 177}, {"yearmonth": "2015 - 01", "num": 179}, {"yearmonth": "2015 - 02", "num": 142}, {"yearmonth": "2015 - 03", "num": 223}, {"yearmonth": "2015 - 04", "num": 191}, {"yearmonth": "2015 - 05", "num": 191}, {"yearmonth": "2015 - 06", "num": 198}, {"yearmonth": "2015 - 07", "num": 217}, {"yearmonth": "2015 - 08", "num": 210}, {"yearmonth": "2015 - 09", "num": 225}, {"yearmonth": "2015 - 10", "num": 245}, {"yearmonth": "2015 - 11", "num": 226}, {"yearmonth": "2015 - 12", "num": 220}, {"yearmonth": "2016 - 01", "num": 202}, {"yearmonth": "2016 - 02", "num": 206}, {"yearmonth": "2016 - 03", "num": 241}, {"yearmonth": "2016 - 04", "num": 203}, {"yearmonth": "2016 - 05", "num": 185}, {"yearmonth": "2016 - 06", "num": 175}, {"yearmonth": "2016 - 07", "num": 160}, {"yearmonth": "2016 - 08", "num": 151}, {"yearmonth": "2016 - 09", "num": 183}, {"yearmonth": "2016 - 10", "num": 220}, {"yearmonth": "2016 - 11", "num": 182}, {"yearmonth": "2016 - 12", "num": 156}, {"yearmonth": "2017 - 01", "num": 238}, {"yearmonth": "2017 - 02", "num": 190}, {"yearmonth": "2017 - 03", "num": 211}, {"yearmonth": "2017 - 04", "num": 191}, {"yearmonth": "2017 - 05", "num": 192}, {"yearmonth": "2017 - 06", "num": 177}, {"yearmonth": "2017 - 07", "num": 166}, {"yearmonth": "2017 - 08", "num": 173}, {"yearmonth": "2017 - 09", "num": 188}, {"yearmonth": "2017 - 10", "num": 169}, {"yearmonth": "2017 - 11", "num": 202}, {"yearmonth": "2017 - 12", "num": 159}, {"yearmonth": "2018 - 01", "num": 168}, {"yearmonth": "2018 - 02", "num": 119}, {"yearmonth": "2018 - 03", "num": 171}, {"yearmonth": "2018 - 04", "num": 153}, {"yearmonth": "2018 - 05", "num": 79}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Suppose that your reader wants to be able to use the plot to deduce when the price increase occurred. Add frequent or custom date labels on the x-axis of your plot such that the date of the price increase is readily apparent. We haven’t covered Altair’s date labeling features in class so you’ll first need to find the relevant help page in the documentation. Which help page did you use?</li>
+</ol>
+<div id="f0059539" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># city sticker increase happened in 2012</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># https://interactive.wbez.org/citystickertickets:~:text=During%20negotiations%20for%20Chicago's%202012,rose%20from%20%24120%20to%20%24200.</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># used this help page from altair documentation (to create the single value)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># https://altair-viz.github.io/user_guide/encodings/index.html</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>grouped[<span class="st">"yearmonth"</span>] <span class="op">=</span> pd.to_datetime(grouped[<span class="st">"yearmonth"</span>])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>grouped[<span class="st">"year"</span>] <span class="op">=</span> grouped[<span class="st">"yearmonth"</span>].dt.strftime(<span class="st">"%Y"</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>grouped[<span class="st">"yearmonth"</span>] <span class="op">=</span> grouped[<span class="st">"yearmonth"</span>].dt.strftime(<span class="st">"%Y - %m"</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>grouped[<span class="st">"pre_post_increase"</span>] <span class="op">=</span> ((grouped[<span class="st">"year"</span>]) <span class="op">&gt;=</span> <span class="dv">2012</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>grouped[<span class="st">"pre_post_increase"</span>] <span class="op">=</span> grouped[<span class="st">"pre_post_increase"</span>].replace({<span class="dv">0</span>:<span class="st">"Pre Increase"</span>, <span class="dv">1</span>:<span class="st">"Post Increase"</span>})</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>tickets_graph <span class="op">=</span> alt.Chart(grouped).mark_bar(</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>).transform_window(</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    cumulative_sum <span class="op">=</span> <span class="st">"sum(num)"</span>,).encode(</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"year:O"</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"cumulative_sum:Q"</span>),</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> alt.Color(<span class="st">"pre_post_increase:N"</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>).properties(</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">400</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    height <span class="op">=</span> <span class="dv">200</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>tickets_graph</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\danie\AppData\Local\Temp\ipykernel_20316\3321475243.py:8: UserWarning: Could not infer format, so each element will be parsed individually, falling back to `dateutil`. To ensure parsing is consistent and as-expected, please specify a format.
+  grouped["yearmonth"] = pd.to_datetime(grouped["yearmonth"])</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+
+<style>
+  #altair-viz-84f21044df2d485ab6bb472e31f7c564.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-84f21044df2d485ab6bb472e31f7c564.vega-embed details,
+  #altair-viz-84f21044df2d485ab6bb472e31f7c564.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-84f21044df2d485ab6bb472e31f7c564"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-84f21044df2d485ab6bb472e31f7c564") {
+      outputDiv = document.getElementById("altair-viz-84f21044df2d485ab6bb472e31f7c564");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-b4bcf9178a9224120df5de9383dda61c"}, "mark": {"type": "bar"}, "encoding": {"color": {"field": "pre_post_increase", "type": "nominal"}, "x": {"field": "year", "type": "ordinal"}, "y": {"field": "cumulative_sum", "type": "quantitative"}}, "height": 200, "transform": [{"window": [{"op": "sum", "field": "num", "as": "cumulative_sum"}]}], "width": 400, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-b4bcf9178a9224120df5de9383dda61c": [{"yearmonth": "2007 - 01", "num": 160, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 02", "num": 104, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 03", "num": 161, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 04", "num": 158, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 05", "num": 126, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 06", "num": 80, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 07", "num": 399, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 08", "num": 345, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 09", "num": 224, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 10", "num": 221, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 11", "num": 168, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2007 - 12", "num": 118, "year": 2007, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 01", "num": 132, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 02", "num": 149, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 03", "num": 192, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 04", "num": 166, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 05", "num": 139, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 06", "num": 72, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 07", "num": 382, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 08", "num": 342, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 09", "num": 213, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 10", "num": 197, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 11", "num": 148, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2008 - 12", "num": 80, "year": 2008, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 01", "num": 81, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 02", "num": 121, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 03", "num": 171, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 04", "num": 149, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 05", "num": 132, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 06", "num": 89, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 07", "num": 392, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 08", "num": 347, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 09", "num": 211, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 10", "num": 188, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 11", "num": 170, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2009 - 12", "num": 98, "year": 2009, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 01", "num": 156, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 02", "num": 129, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 03", "num": 153, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 04", "num": 138, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 05", "num": 140, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 06", "num": 99, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 07", "num": 26, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 08", "num": 425, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 09", "num": 237, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 10", "num": 197, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 11", "num": 168, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2010 - 12", "num": 117, "year": 2010, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 01", "num": 153, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 02", "num": 87, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 03", "num": 147, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 04", "num": 135, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 05", "num": 134, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 06", "num": 78, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 07", "num": 317, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 08", "num": 313, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 09", "num": 171, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 10", "num": 136, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 11", "num": 139, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2011 - 12", "num": 123, "year": 2011, "pre_post_increase": "Pre Increase"}, {"yearmonth": "2012 - 01", "num": 114, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 02", "num": 138, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 03", "num": 181, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 04", "num": 142, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 05", "num": 115, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 06", "num": 100, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 07", "num": 414, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 08", "num": 319, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 09", "num": 179, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 10", "num": 171, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 11", "num": 157, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2012 - 12", "num": 162, "year": 2012, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 01", "num": 196, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 02", "num": 158, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 03", "num": 199, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 04", "num": 187, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 05", "num": 179, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 06", "num": 140, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 07", "num": 499, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 08", "num": 355, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 09", "num": 221, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 10", "num": 208, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 11", "num": 127, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2013 - 12", "num": 98, "year": 2013, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 01", "num": 100, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 02", "num": 147, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 03", "num": 155, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 04", "num": 144, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 05", "num": 178, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 06", "num": 116, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 07", "num": 267, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 08", "num": 245, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 09", "num": 178, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 10", "num": 165, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 11", "num": 153, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2014 - 12", "num": 177, "year": 2014, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 01", "num": 179, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 02", "num": 142, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 03", "num": 223, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 04", "num": 191, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 05", "num": 191, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 06", "num": 198, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 07", "num": 217, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 08", "num": 210, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 09", "num": 225, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 10", "num": 245, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 11", "num": 226, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2015 - 12", "num": 220, "year": 2015, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 01", "num": 202, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 02", "num": 206, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 03", "num": 241, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 04", "num": 203, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 05", "num": 185, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 06", "num": 175, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 07", "num": 160, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 08", "num": 151, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 09", "num": 183, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 10", "num": 220, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 11", "num": 182, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2016 - 12", "num": 156, "year": 2016, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 01", "num": 238, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 02", "num": 190, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 03", "num": 211, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 04", "num": 191, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 05", "num": 192, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 06", "num": 177, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 07", "num": 166, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 08", "num": 173, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 09", "num": 188, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 10", "num": 169, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 11", "num": 202, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2017 - 12", "num": 159, "year": 2017, "pre_post_increase": "Post Increase"}, {"yearmonth": "2018 - 01", "num": 168, "year": 2018, "pre_post_increase": "Post Increase"}, {"yearmonth": "2018 - 02", "num": 119, "year": 2018, "pre_post_increase": "Post Increase"}, {"yearmonth": "2018 - 03", "num": 171, "year": 2018, "pre_post_increase": "Post Increase"}, {"yearmonth": "2018 - 04", "num": 153, "year": 2018, "pre_post_increase": "Post Increase"}, {"yearmonth": "2018 - 05", "num": 79, "year": 2018, "pre_post_increase": "Post Increase"}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<ol start="3" type="1">
+<li>The City Clerk said the price increase would raise revenue by $16 million per year. For now, ignore the fact that many tickets are not paid and assume that the number of tickets issued is the same before and after the policy change. Using only the data available in the calendar year prior to the increase, how much of a revenue increase should they have projected? Remember that you are working with a one percent sample of the data. Assume that the number of tickets of this type issued afterward would be constant a you can assume that there are no late fees or collection fees, so a ticket is either paid at its face value or is never paid.</li>
+</ol>
+<div id="9057758a" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#need to check that each year has a relativley equal distribution </span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># of tickets per year in the 1% dataset</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>missing_stickers_copy <span class="op">=</span> missing_stickers.copy()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>missing_stickers_copy[<span class="st">"issue_date"</span>] <span class="op">=</span> pd.to_datetime(missing_stickers_copy[<span class="st">"issue_date"</span>])</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>df_names <span class="op">=</span> []</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>df_values <span class="op">=</span> []</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2007</span>, <span class="dv">2019</span>):</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    filtered_data <span class="op">=</span> missing_stickers_copy[missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year <span class="op">==</span> i]</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    df_values.append(filtered_data.shape[<span class="dv">0</span>])</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    df_names.append(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>tickets_per_year <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"year"</span>: df_names,</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"number_of_tickets"</span>: df_values</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tickets_per_year)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"the expected revenue is </span><span class="sc">{</span>(<span class="dv">193300</span> <span class="op">*</span> <span class="dv">200</span>) <span class="op">-</span> (<span class="dv">193300</span> <span class="op">*</span> <span class="dv">120</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    year  number_of_tickets
+0   2007               2264
+1   2008               2212
+2   2009               2149
+3   2010               1985
+4   2011               1933
+5   2012               2192
+6   2013               2567
+7   2014               2025
+8   2015               2467
+9   2016               2264
+10  2017               2256
+11  2018                690
+the expected revenue is 15464000</code></pre>
+</div>
+</div>
+<p>There were 1933 tickets issued in 2011 in our 1% dataset, which is roughly 8.66% of the dataset. Rounding up, we can say that there are approximately ~193,300 tickets per year, and at 200$ per ticket, we get a projected increase of $15,464,000.</p>
+<ol start="4" type="1">
+<li>What happened to repayment rates (percentage of tickets issued that had payments made) on this type of ticket in the calendar year after the price increase went into effect? Suppose for a moment that the number of tickets issued was unchanged after the price increase. Using the new repayment rates in the year after the price increase occurred, what would the change in revenue have been?</li>
+</ol>
+<div id="9af1ed10" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df_2011 <span class="op">=</span> missing_stickers_copy[missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year <span class="op">==</span> <span class="dv">2011</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>df_2013 <span class="op">=</span> missing_stickers_copy[missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year <span class="op">==</span> <span class="dv">2013</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>df_2011[<span class="st">"ticket_queue"</span>] <span class="op">=</span> df_2011[<span class="st">"ticket_queue"</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>repayment_2011 <span class="op">=</span> <span class="bu">round</span>((df_2011[df_2011[<span class="st">"ticket_queue"</span>] <span class="op">!=</span> <span class="st">"Paid"</span>].shape[<span class="dv">0</span>] <span class="op">/</span> df_2011.shape[<span class="dv">0</span>] <span class="op">*</span> <span class="dv">100</span>), <span class="dv">2</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>repayment_2013 <span class="op">=</span> <span class="bu">round</span>((df_2013[df_2013[<span class="st">"ticket_queue"</span>] <span class="op">!=</span> <span class="st">"Paid"</span>].shape[<span class="dv">0</span>] <span class="op">/</span> df_2013.shape[<span class="dv">0</span>] <span class="op">*</span> <span class="dv">100</span>), <span class="dv">2</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2011 repayment rate: </span><span class="sc">{</span>repayment_2011<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2013 repayment rate: </span><span class="sc">{</span>repayment_2013<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"percentage point change: </span><span class="sc">{</span><span class="bu">round</span>(repayment_2011 <span class="op">-</span> repayment_2013, <span class="dv">2</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"revenue, with 2011 tickets with 2013 repayment rates: </span><span class="sc">{</span><span class="bu">round</span>(<span class="dv">1933</span> <span class="op">*</span> (repayment_2013 <span class="op">/</span> <span class="dv">100</span>) <span class="op">*</span> <span class="dv">200</span>)<span class="sc">}</span><span class="ss">"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2011 repayment rate: 46.09
+2013 repayment rate: 59.41
+percentage point change: -13.32
+revenue, with 2011 tickets with 2013 repayment rates: 229679</code></pre>
+</div>
+</div>
+<ol start="5" type="1">
+<li>Make a plot with the repayment rates on “missing city sticker” tickets and a vertical line at when the new policy was introduced. Interpret.</li>
+</ol>
+<div id="ec49a4b2" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># finding the repayment rates for each year with the following function</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># repayment rate/year  = (# of paid missing city stickers in a given year) / (# of missing city stickers in a given year)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>repayment_rate_list <span class="op">=</span> []</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year.unique())):</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    paid_year_df <span class="op">=</span> missing_stickers_copy[(missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year <span class="op">==</span> (<span class="dv">2007</span> <span class="op">+</span> i)) <span class="op">&amp;</span> (missing_stickers_copy[<span class="st">"ticket_queue"</span>] <span class="op">==</span> <span class="st">"Paid"</span>)]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    year_df <span class="op">=</span> missing_stickers_copy[missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year <span class="op">==</span> (<span class="dv">2007</span><span class="op">+</span>i)]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> <span class="bu">round</span>(paid_year_df.shape[<span class="dv">0</span>] <span class="op">/</span> year_df.shape[<span class="dv">0</span>], <span class="dv">2</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    repayment_rate_list.append(value)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>repayment_rate_list</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>year_list <span class="op">=</span> <span class="bu">list</span>(missing_stickers_copy[<span class="st">"issue_date"</span>].dt.year.unique())</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">#creating the dataframe from the two lists and graphing</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>rr_df <span class="op">=</span> pd.DataFrame(year_list, repayment_rate_list).reset_index()</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>rr_df.columns <span class="op">=</span> [<span class="st">"repayment_rate"</span>, <span class="st">"year"</span>]</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>chart <span class="op">=</span> alt.Chart(rr_df).mark_point().encode(</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"year:Q"</span>, scale <span class="op">=</span> alt.Scale(domain <span class="op">=</span> [<span class="dv">2005</span>, <span class="dv">2019</span>])),</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"repayment_rate:Q"</span>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>rule <span class="op">=</span> alt.Chart().mark_rule().encode(</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> alt.datum(<span class="dv">2012</span>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>chart <span class="op">+</span> rule</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+
+<style>
+  #altair-viz-71b5cfaff444475ba843d4ce99d50e67.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-71b5cfaff444475ba843d4ce99d50e67.vega-embed details,
+  #altair-viz-71b5cfaff444475ba843d4ce99d50e67.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-71b5cfaff444475ba843d4ce99d50e67"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-71b5cfaff444475ba843d4ce99d50e67") {
+      outputDiv = document.getElementById("altair-viz-71b5cfaff444475ba843d4ce99d50e67");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"data": {"name": "data-7d416bb9b18523b9b3b099df8ab13814"}, "mark": {"type": "point"}, "encoding": {"x": {"field": "year", "scale": {"domain": [2005, 2019]}, "type": "quantitative"}, "y": {"field": "repayment_rate", "type": "quantitative"}}}, {"data": {"name": "empty"}, "mark": {"type": "rule"}, "encoding": {"x": {"datum": 2012}}}], "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-7d416bb9b18523b9b3b099df8ab13814": [{"repayment_rate": 0.55, "year": 2007}, {"repayment_rate": 0.58, "year": 2008}, {"repayment_rate": 0.53, "year": 2009}, {"repayment_rate": 0.52, "year": 2010}, {"repayment_rate": 0.54, "year": 2011}, {"repayment_rate": 0.48, "year": 2012}, {"repayment_rate": 0.41, "year": 2013}, {"repayment_rate": 0.38, "year": 2014}, {"repayment_rate": 0.41, "year": 2015}, {"repayment_rate": 0.41, "year": 2016}, {"repayment_rate": 0.37, "year": 2017}, {"repayment_rate": 0.2, "year": 2018}], "empty": [{}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<p>My intepretation of this graph is that there is significant drop off in the ability of people with the missing city sticker to pay after the increased fines. Disregarding 2018 since the year is not complete in the data, from 2012 to 2017 the new mean is around .4, where in the years leading up to the price increase, the repayment rate was near .55.</p>
+<ol start="6" type="1">
+<li>Suppose that the City Clerk were committed to getting more revenue from tickets. What three violation types would you as an analyst have recommended they increase the price of? Consider both the number of tickets issued for each violation type and the repayment rate for each violation type. You may assume there is no behavioral response to price changes (ie. people continue to commit violations at the same rate and repay at the same rate). Make a plot to support your argument and explain in writing why it supports your argument. Headlines and sub-messages (20 points)</li>
+</ol>
+<div id="4fce1142" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>violation_counts <span class="op">=</span> pd.DataFrame(df[<span class="st">"violation_description"</span>].value_counts()).reset_index()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>repayment_rate_list <span class="op">=</span> []</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> violation_counts[<span class="st">"violation_description"</span>]:</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#filtering the big dataframe to get number of paid per code</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    paid_code <span class="op">=</span> df[(df[<span class="st">"violation_description"</span>] <span class="op">==</span> <span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>) <span class="op">&amp;</span> (df[<span class="st">"ticket_queue"</span>] <span class="op">==</span> <span class="st">"Paid"</span>)]</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    paid_code_value <span class="op">=</span> paid_code.shape[<span class="dv">0</span>]</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#filtering to get just the code</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    code <span class="op">=</span> df[df[<span class="st">"violation_description"</span>] <span class="op">==</span> <span class="ss">f"</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span>]</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    code_value <span class="op">=</span> code.shape[<span class="dv">0</span>]</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    repayment_rate <span class="op">=</span> <span class="bu">round</span>(paid_code_value <span class="op">/</span> code_value, <span class="dv">2</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    repayment_rate_list.append(repayment_rate)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>repayment_rate_list</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="co">#adding the repayment rates to the violation counts df, and only looking at the top 6 rows</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>violation_counts[<span class="st">"repayment_rate"</span>] <span class="op">=</span> repayment_rate_list</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>subset <span class="op">=</span> violation_counts[<span class="dv">0</span>:<span class="dv">6</span>]</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co">#now interested in the fine amounts to create the size variable</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> df[df[<span class="st">"violation_description"</span>].isin(<span class="bu">list</span>(subset[<span class="st">"violation_description"</span>]))]</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> size.groupby([<span class="st">"violation_description"</span>, <span class="st">"fine_level1_amount"</span>])</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>size.describe()</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>chart <span class="op">=</span> alt.Chart(subset).mark_point(filled <span class="op">=</span> <span class="va">True</span>, size <span class="op">=</span> <span class="dv">100</span>).encode(</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"repayment_rate"</span>, scale <span class="op">=</span> alt.Scale(domain <span class="op">=</span> [<span class="fl">.5</span>, <span class="fl">.9</span>])),</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"count"</span>, scale <span class="op">=</span> alt.Scale(domain <span class="op">=</span> [<span class="dv">15000</span>, <span class="dv">50000</span>])),</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> alt.Color(<span class="st">"violation_description"</span>),</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>chart</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+
+<style>
+  #altair-viz-e1b25483cbcc45268d74cc4b74285bea.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-e1b25483cbcc45268d74cc4b74285bea.vega-embed details,
+  #altair-viz-e1b25483cbcc45268d74cc4b74285bea.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-e1b25483cbcc45268d74cc4b74285bea"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-e1b25483cbcc45268d74cc4b74285bea") {
+      outputDiv = document.getElementById("altair-viz-e1b25483cbcc45268d74cc4b74285bea");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-ccf15ddb99a0b2acfb836fda465e24f1"}, "mark": {"type": "point", "filled": true, "size": 100}, "encoding": {"color": {"field": "violation_description", "type": "nominal"}, "x": {"field": "repayment_rate", "scale": {"domain": [0.5, 0.9]}, "type": "quantitative"}, "y": {"field": "count", "scale": {"domain": [15000, 50000]}, "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-ccf15ddb99a0b2acfb836fda465e24f1": [{"violation_description": "EXPIRED PLATES OR TEMPORARY REGISTRATION", "count": 44811, "repayment_rate": 0.6}, {"violation_description": "STREET CLEANING", "count": 28712, "repayment_rate": 0.81}, {"violation_description": "RESIDENTIAL PERMIT PARKING", "count": 23683, "repayment_rate": 0.74}, {"violation_description": "EXP. METER NON-CENTRAL BUSINESS DISTRICT", "count": 20600, "repayment_rate": 0.79}, {"violation_description": "PARKING/STANDING PROHIBITED ANYTIME", "count": 19753, "repayment_rate": 0.71}, {"violation_description": "EXPIRED METER OR OVERSTAY", "count": 18756, "repayment_rate": 0.81}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<p>Looking the size groupby.describe() output, we can see that the first fine for the top six tickets is right around 50$. So it is relatively safe to assume that, for the purposes of argument, that all tickets have the same fine amount. Therefore, based on the graphic created, the top three descriptions that I would be interested in if I were the City Clerk would be the Expired Plates, Street Cleaning, and Residential Permit fines, since these three have the highest combination of repayment rates and total issued tickets. Notice that the expired plates has a significantly lower repayment rate, however the sheer volume of tickets issued for this category outweigh the lower repayment rate. The next two in terms of volume of tickets issued are street cleaning and residential permits, and both of these have very high repayment rates.</p>
+<p><strong>2</strong></p>
+<ol type="1">
+<li>The City Clerk has now begun to wonder… maybe raising ticket prices will lead to a decline in repayment rates after all. Make a data frame where each row is a violation description, the fraction of time that the ticket is paid, and the average level 1 fine. Sort this dataframe based on how many total tickets of each type have been issued. Print the rows for the 5 most common violation descriptions.</li>
+</ol>
+<div id="430b145d" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>unique_violation_descriptions <span class="op">=</span> df[<span class="st">"violation_description"</span>].unique()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>unique_violation_descriptions</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>payment_rate_list <span class="op">=</span> []</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>average_fine_list <span class="op">=</span> []</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>counts_violation_descriptions <span class="op">=</span> df[<span class="st">"violation_description"</span>].value_counts().reset_index()</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> unique_violation_descriptions:</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    filtered_df <span class="op">=</span> df[df[<span class="st">"violation_description"</span>] <span class="op">==</span> i]</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    payment_rate <span class="op">=</span> filtered_df[filtered_df[<span class="st">"ticket_queue"</span>] <span class="op">==</span> <span class="st">"Paid"</span>].shape[<span class="dv">0</span>] <span class="op">/</span> filtered_df.shape[<span class="dv">0</span>]</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    payment_rate_list.append(payment_rate)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    average_fine <span class="op">=</span> <span class="bu">round</span>(filtered_df[<span class="st">"fine_level1_amount"</span>].mean())</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    average_fine_list.append(average_fine)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>new_df <span class="op">=</span> pd.DataFrame({<span class="st">"violation_description"</span>: unique_violation_descriptions,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"payment rate"</span>:payment_rate_list, </span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"average fine $"</span>: average_fine_list, </span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                       })</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>new_df <span class="op">=</span> new_df.merge(counts_violation_descriptions, on <span class="op">=</span> <span class="st">"violation_description"</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>new_df <span class="op">=</span> new_df.sort_values(<span class="st">"count"</span>, ascending <span class="op">=</span> <span class="va">False</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>new_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">violation_description</th>
+<th data-quarto-table-cell-role="th">payment rate</th>
+<th data-quarto-table-cell-role="th">average fine $</th>
+<th data-quarto-table-cell-role="th">count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>EXPIRED PLATES OR TEMPORARY REGISTRATION</td>
+<td>0.604361</td>
+<td>55</td>
+<td>44811</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">80</td>
+<td>STREET CLEANING</td>
+<td>0.811612</td>
+<td>54</td>
+<td>28712</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>RESIDENTIAL PERMIT PARKING</td>
+<td>0.742262</td>
+<td>66</td>
+<td>23683</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">17</td>
+<td>EXP. METER NON-CENTRAL BUSINESS DISTRICT</td>
+<td>0.792913</td>
+<td>47</td>
+<td>20600</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>PARKING/STANDING PROHIBITED ANYTIME</td>
+<td>0.705817</td>
+<td>66</td>
+<td>19753</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Make a scatter plot which shows the relationship between fine amount and the fraction of tickets that are paid. Focus only on violations that appear at least 100 times. There will be one outlier with a high fine and you can exclude that ticket type from the plot. Then make two other plots which show the same relationship in different ways. For all three plots, write out what are the headlines and what are sub-messages.</li>
+</ol>
+<div id="93414dbd" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> new_df[(new_df[<span class="st">"count"</span>] <span class="op">&gt;=</span> <span class="dv">100</span>) <span class="op">&amp;</span> (new_df[<span class="st">"average fine $"</span>] <span class="op">&lt;</span> <span class="dv">300</span>)]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>chart1 <span class="op">=</span> alt.Chart(data).mark_point(filled <span class="op">=</span> <span class="va">True</span>).encode(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"average fine $:Q"</span>),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"payment rate:Q"</span>),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>chart2 <span class="op">=</span> alt.Chart(data).mark_point(filled <span class="op">=</span> <span class="va">True</span>).encode(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"average fine $:Q"</span>),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"payment rate:Q"</span>),</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    size <span class="op">=</span> alt.Size(<span class="st">"count"</span>),</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>chart3 <span class="op">=</span> alt.Chart(data).mark_bar().encode(</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    alt.X(<span class="st">"average fine $:Q"</span>),</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    alt.Y(<span class="st">"payment rate:Q"</span>),</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> alt.Color(<span class="st">"violation_description"</span>))</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>chart1 <span class="op">&amp;</span> chart2 <span class="op">&amp;</span> chart3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+
+<style>
+  #altair-viz-e9c415d763cc4468b1ccb1b01ab040df.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-e9c415d763cc4468b1ccb1b01ab040df.vega-embed details,
+  #altair-viz-e9c415d763cc4468b1ccb1b01ab040df.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-e9c415d763cc4468b1ccb1b01ab040df"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-e9c415d763cc4468b1ccb1b01ab040df") {
+      outputDiv = document.getElementById("altair-viz-e9c415d763cc4468b1ccb1b01ab040df");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "vconcat": [{"mark": {"type": "point", "filled": true}, "encoding": {"x": {"field": "average fine $", "type": "quantitative"}, "y": {"field": "payment rate", "type": "quantitative"}}}, {"mark": {"type": "point", "filled": true}, "encoding": {"size": {"field": "count", "type": "quantitative"}, "x": {"field": "average fine $", "type": "quantitative"}, "y": {"field": "payment rate", "type": "quantitative"}}}, {"mark": {"type": "bar"}, "encoding": {"color": {"field": "violation_description", "type": "nominal"}, "x": {"field": "average fine $", "type": "quantitative"}, "y": {"field": "payment rate", "type": "quantitative"}}}], "data": {"name": "data-75d1b6eed55830fb620b8ecac7a96cc7"}, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-75d1b6eed55830fb620b8ecac7a96cc7": [{"violation_description": "EXPIRED PLATES OR TEMPORARY REGISTRATION", "payment rate": 0.604360536475419, "average fine $": 55, "count": 44811}, {"violation_description": "STREET CLEANING", "payment rate": 0.8116118696015603, "average fine $": 54, "count": 28712}, {"violation_description": "RESIDENTIAL PERMIT PARKING", "payment rate": 0.7422623822995398, "average fine $": 66, "count": 23683}, {"violation_description": "EXP. METER NON-CENTRAL BUSINESS DISTRICT", "payment rate": 0.7929126213592232, "average fine $": 47, "count": 20600}, {"violation_description": "PARKING/STANDING PROHIBITED ANYTIME", "payment rate": 0.705816837948666, "average fine $": 66, "count": 19753}, {"violation_description": "EXPIRED METER OR OVERSTAY", "payment rate": 0.8063552996374493, "average fine $": 50, "count": 18756}, {"violation_description": "REAR AND FRONT PLATE REQUIRED", "payment rate": 0.5304820266599279, "average fine $": 55, "count": 15829}, {"violation_description": "NO CITY STICKER VEHICLE UNDER/EQUAL TO 16,000 LBS.", "payment rate": 0.39835743366559034, "average fine $": 200, "count": 14246}, {"violation_description": "RUSH HOUR PARKING", "payment rate": 0.7704137066443795, "average fine $": 68, "count": 11965}, {"violation_description": "NO CITY STICKER OR IMPROPER DISPLAY", "payment rate": 0.5433027011974381, "average fine $": 120, "count": 10773}, {"violation_description": "EXPIRED METER CENTRAL BUSINESS DISTRICT", "payment rate": 0.7416803615447822, "average fine $": 63, "count": 9736}, {"violation_description": "NO STANDING/PARKING TIME RESTRICTED", "payment rate": 0.7511574074074074, "average fine $": 75, "count": 8640}, {"violation_description": "WITHIN 15' OF FIRE HYDRANT", "payment rate": 0.6754587155963303, "average fine $": 116, "count": 6104}, {"violation_description": "PARK OR STAND IN BUS/TAXI/CARRIAGE STAND", "payment rate": 0.663724183877415, "average fine $": 98, "count": 6004}, {"violation_description": "TRUCK,RV,BUS, OR TAXI RESIDENTIAL STREET", "payment rate": 0.6949258717895176, "average fine $": 38, "count": 4789}, {"violation_description": "STREET CLEANING OR SPECIAL EVENT", "payment rate": 0.7875370919881306, "average fine $": 50, "count": 3370}, {"violation_description": "DOUBLE PARKING OR STANDING", "payment rate": 0.5902203856749312, "average fine $": 100, "count": 2904}, {"violation_description": "EXPIRED PLATE OR TEMPORARY REGISTRATION", "payment rate": 0.4077205882352941, "average fine $": 60, "count": 2720}, {"violation_description": "STOP SIGN OR TRAFFIC SIGNAL", "payment rate": 0.8073938840712004, "average fine $": 58, "count": 2191}, {"violation_description": "PARK OR BLOCK ALLEY", "payment rate": 0.5253658536585366, "average fine $": 150, "count": 2050}, {"violation_description": "DISABLED PARKING ZONE", "payment rate": 0.5417895771878073, "average fine $": 217, "count": 2034}, {"violation_description": "PARK OR STAND ON CROSSWALK", "payment rate": 0.7112135176651305, "average fine $": 59, "count": 1953}, {"violation_description": "NONCOMPLIANT PLATE(S)", "payment rate": 0.6088541666666667, "average fine $": 55, "count": 1920}, {"violation_description": "SMOKED/TINTED WINDOWS PARKED/STANDING", "payment rate": 0.6246317030053035, "average fine $": 151, "count": 1697}, {"violation_description": "BLOCK ACCESS/ALLEY/DRIVEWAY/FIRELANE", "payment rate": 0.6421785940468651, "average fine $": 142, "count": 1579}, {"violation_description": "OBSTRUCT ROADWAY", "payment rate": 0.50285351934052, "average fine $": 75, "count": 1577}, {"violation_description": "STAND, PARK, OR OTHER USE OF BUS LANE", "payment rate": 0.5936739659367397, "average fine $": 90, "count": 1233}, {"violation_description": "CURB LOADING ZONE", "payment rate": 0.7053941908713693, "average fine $": 58, "count": 1205}, {"violation_description": "WRONG DIRECTION OR 12'' FROM CURB", "payment rate": 0.774977497749775, "average fine $": 25, "count": 1111}, {"violation_description": "ABANDONED VEH. FOR 7 DAYS OR INOPERABLE", "payment rate": 0.2463768115942029, "average fine $": 72, "count": 1104}, {"violation_description": "PARK OR STAND ON SIDEWALK", "payment rate": 0.6853281853281853, "average fine $": 59, "count": 1036}, {"violation_description": "MISSING/NONCOMPLIANT FRONT AND/OR REAR PLATE", "payment rate": 0.322265625, "average fine $": 60, "count": 1024}, {"violation_description": "PARK ALLEY", "payment rate": 0.40981963927855714, "average fine $": 150, "count": 998}, {"violation_description": "SAFETY BELTS REQUIRED", "payment rate": 0.7125382262996942, "average fine $": 25, "count": 981}, {"violation_description": "3-7 AM SNOW ROUTE", "payment rate": 0.7115613825983313, "average fine $": 56, "count": 839}, {"violation_description": "PARK VEHICLE SOLE PURPOSE OF DISPLAYING FOR SALE", "payment rate": 0.1927710843373494, "average fine $": 100, "count": 664}, {"violation_description": "WINDOWS MISSING OR CRACKED BEYOND 6", "payment rate": 0.6059027777777778, "average fine $": 25, "count": 576}, {"violation_description": "PARK OR STAND ON PARKWAY", "payment rate": 0.7232323232323232, "average fine $": 59, "count": 495}, {"violation_description": "SPECIAL EVENTS RESTRICTION", "payment rate": 0.7748917748917749, "average fine $": 60, "count": 462}, {"violation_description": "TRUCK,MOTOR HOME, BUS BUSINESS STREET", "payment rate": 0.6907894736842105, "average fine $": 27, "count": 456}, {"violation_description": "TWO HEAD LAMPS REQUIRED VISIBLE 1000'", "payment rate": 0.5914221218961625, "average fine $": 25, "count": 443}, {"violation_description": "DISABLED CURB CUT", "payment rate": 0.7706422018348624, "average fine $": 75, "count": 436}, {"violation_description": "IMPROPER DISPLAY OF CITY STICKER", "payment rate": 0.7644110275689223, "average fine $": 30, "count": 399}, {"violation_description": "20'OF CROSSWALK", "payment rate": 0.72264631043257, "average fine $": 58, "count": 393}, {"violation_description": "NO PARK IN PRIVATE LOT", "payment rate": 0.582010582010582, "average fine $": 25, "count": 378}, {"violation_description": "REAR PLATE REQUIRED MOTORCYCLE/TRAILER", "payment rate": 0.5710227272727273, "average fine $": 59, "count": 352}, {"violation_description": "HAZARDOUS DILAPITATED VEHICLE", "payment rate": 0.23154362416107382, "average fine $": 69, "count": 298}, {"violation_description": "PARK OUTSIDE METERED SPACE", "payment rate": 0.5935251798561151, "average fine $": 49, "count": 278}, {"violation_description": "OBSTRUCTED OR IMPROPERLY TINTED WINDOWS", "payment rate": 0.5535055350553506, "average fine $": 156, "count": 271}, {"violation_description": "PARK OR STAND IN VIADUCT/UNDERPASS", "payment rate": 0.708502024291498, "average fine $": 75, "count": 247}, {"violation_description": "PARK/STAND ON BICYCLE PATH", "payment rate": 0.6567796610169492, "average fine $": 143, "count": 236}, {"violation_description": "PARK IN CITY LOT WHEN CLOSED", "payment rate": 0.7022222222222222, "average fine $": 47, "count": 225}, {"violation_description": "PARK OR STAND ON CITY PROPERTY", "payment rate": 0.41530054644808745, "average fine $": 48, "count": 183}, {"violation_description": "LAMPS BROKEN OR INOPERABLE", "payment rate": 0.5987654320987654, "average fine $": 25, "count": 162}, {"violation_description": "TRUCK TRAILOR/SEMI/TRAILER PROHIBITED", "payment rate": 0.4394904458598726, "average fine $": 125, "count": 157}, {"violation_description": "HAZARDOUS DILAPIDATED VEHICLE", "payment rate": 0.24324324324324326, "average fine $": 75, "count": 148}, {"violation_description": "TRUCK OR SEMI-TRAILER PROHIBITED", "payment rate": 0.5310344827586206, "average fine $": 125, "count": 145}, {"violation_description": "SNOW ROUTE: 2'' OF SNOW OR MORE", "payment rate": 0.7083333333333334, "average fine $": 60, "count": 144}, {"violation_description": "INDUSTRIAL PERMIT PARKING", "payment rate": 0.8333333333333334, "average fine $": 50, "count": 120}, {"violation_description": "NO PARK IN PUBLIC LOT", "payment rate": 0.2857142857142857, "average fine $": 48, "count": 119}, {"violation_description": "RED REAR LAMP REQUIRED VISIBLE 500'", "payment rate": 0.5565217391304348, "average fine $": 25, "count": 115}, {"violation_description": "REAR PLATE LIT AND LEGIBLE FOR 50'", "payment rate": 0.5636363636363636, "average fine $": 25, "count": 110}, {"violation_description": "OUTSIDE DIAGONAL MARKINGS", "payment rate": 0.7363636363636363, "average fine $": 45, "count": 110}, {"violation_description": "BURGLAR ALARM SOUNDING OVER 4 MINUTES", "payment rate": 0.7549019607843137, "average fine $": 41, "count": 102}, {"violation_description": "NON PYMT/NON-COM VEH PARKED IN COM LOADING ZONE", "payment rate": 0.45, "average fine $": 140, "count": 100}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<p>Chart 1: Chart 1 is the most straightforward interpretation, where the relationships of average fine amount and payment rates is skewed to high payment rates for lower fines. 6/10</p>
+<p>Chart 2: Chart 2 gives us extra information relative to Chart 1, where we are now able to deduce the relative number of tickets issued for each violation description, along with the average fine and payment rate information carried over from Chart 1. 9/10</p>
+<p>Chart 3: Chart 3 is probably the worst of the three, as it is showing an individual bar for each of the violation descriptions. We are still getting the same information, in that we are able to see the relationships between average fine and payment rates, but the chart is too colorful, too messy, and many of the bars are overlapping, making it difficult to read the visual quickly. 2/10</p>
+<ol start="3" type="1">
+<li>The City Clerk doesn’t understand regressions and only has time to look at one plot. Which plot are you going to bring to them and why? Understanding the structure of the data and summarizing it (Lecture 5, 20 Points)</li>
+</ol>
+<div id="bdc1f53b" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>chart2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+
+<style>
+  #altair-viz-17f3ff86e8ad4362828cf19c40945b4b.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-17f3ff86e8ad4362828cf19c40945b4b.vega-embed details,
+  #altair-viz-17f3ff86e8ad4362828cf19c40945b4b.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-17f3ff86e8ad4362828cf19c40945b4b"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-17f3ff86e8ad4362828cf19c40945b4b") {
+      outputDiv = document.getElementById("altair-viz-17f3ff86e8ad4362828cf19c40945b4b");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-75d1b6eed55830fb620b8ecac7a96cc7"}, "mark": {"type": "point", "filled": true}, "encoding": {"size": {"field": "count", "type": "quantitative"}, "x": {"field": "average fine $", "type": "quantitative"}, "y": {"field": "payment rate", "type": "quantitative"}}, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-75d1b6eed55830fb620b8ecac7a96cc7": [{"violation_description": "EXPIRED PLATES OR TEMPORARY REGISTRATION", "payment rate": 0.604360536475419, "average fine $": 55, "count": 44811}, {"violation_description": "STREET CLEANING", "payment rate": 0.8116118696015603, "average fine $": 54, "count": 28712}, {"violation_description": "RESIDENTIAL PERMIT PARKING", "payment rate": 0.7422623822995398, "average fine $": 66, "count": 23683}, {"violation_description": "EXP. METER NON-CENTRAL BUSINESS DISTRICT", "payment rate": 0.7929126213592232, "average fine $": 47, "count": 20600}, {"violation_description": "PARKING/STANDING PROHIBITED ANYTIME", "payment rate": 0.705816837948666, "average fine $": 66, "count": 19753}, {"violation_description": "EXPIRED METER OR OVERSTAY", "payment rate": 0.8063552996374493, "average fine $": 50, "count": 18756}, {"violation_description": "REAR AND FRONT PLATE REQUIRED", "payment rate": 0.5304820266599279, "average fine $": 55, "count": 15829}, {"violation_description": "NO CITY STICKER VEHICLE UNDER/EQUAL TO 16,000 LBS.", "payment rate": 0.39835743366559034, "average fine $": 200, "count": 14246}, {"violation_description": "RUSH HOUR PARKING", "payment rate": 0.7704137066443795, "average fine $": 68, "count": 11965}, {"violation_description": "NO CITY STICKER OR IMPROPER DISPLAY", "payment rate": 0.5433027011974381, "average fine $": 120, "count": 10773}, {"violation_description": "EXPIRED METER CENTRAL BUSINESS DISTRICT", "payment rate": 0.7416803615447822, "average fine $": 63, "count": 9736}, {"violation_description": "NO STANDING/PARKING TIME RESTRICTED", "payment rate": 0.7511574074074074, "average fine $": 75, "count": 8640}, {"violation_description": "WITHIN 15' OF FIRE HYDRANT", "payment rate": 0.6754587155963303, "average fine $": 116, "count": 6104}, {"violation_description": "PARK OR STAND IN BUS/TAXI/CARRIAGE STAND", "payment rate": 0.663724183877415, "average fine $": 98, "count": 6004}, {"violation_description": "TRUCK,RV,BUS, OR TAXI RESIDENTIAL STREET", "payment rate": 0.6949258717895176, "average fine $": 38, "count": 4789}, {"violation_description": "STREET CLEANING OR SPECIAL EVENT", "payment rate": 0.7875370919881306, "average fine $": 50, "count": 3370}, {"violation_description": "DOUBLE PARKING OR STANDING", "payment rate": 0.5902203856749312, "average fine $": 100, "count": 2904}, {"violation_description": "EXPIRED PLATE OR TEMPORARY REGISTRATION", "payment rate": 0.4077205882352941, "average fine $": 60, "count": 2720}, {"violation_description": "STOP SIGN OR TRAFFIC SIGNAL", "payment rate": 0.8073938840712004, "average fine $": 58, "count": 2191}, {"violation_description": "PARK OR BLOCK ALLEY", "payment rate": 0.5253658536585366, "average fine $": 150, "count": 2050}, {"violation_description": "DISABLED PARKING ZONE", "payment rate": 0.5417895771878073, "average fine $": 217, "count": 2034}, {"violation_description": "PARK OR STAND ON CROSSWALK", "payment rate": 0.7112135176651305, "average fine $": 59, "count": 1953}, {"violation_description": "NONCOMPLIANT PLATE(S)", "payment rate": 0.6088541666666667, "average fine $": 55, "count": 1920}, {"violation_description": "SMOKED/TINTED WINDOWS PARKED/STANDING", "payment rate": 0.6246317030053035, "average fine $": 151, "count": 1697}, {"violation_description": "BLOCK ACCESS/ALLEY/DRIVEWAY/FIRELANE", "payment rate": 0.6421785940468651, "average fine $": 142, "count": 1579}, {"violation_description": "OBSTRUCT ROADWAY", "payment rate": 0.50285351934052, "average fine $": 75, "count": 1577}, {"violation_description": "STAND, PARK, OR OTHER USE OF BUS LANE", "payment rate": 0.5936739659367397, "average fine $": 90, "count": 1233}, {"violation_description": "CURB LOADING ZONE", "payment rate": 0.7053941908713693, "average fine $": 58, "count": 1205}, {"violation_description": "WRONG DIRECTION OR 12'' FROM CURB", "payment rate": 0.774977497749775, "average fine $": 25, "count": 1111}, {"violation_description": "ABANDONED VEH. FOR 7 DAYS OR INOPERABLE", "payment rate": 0.2463768115942029, "average fine $": 72, "count": 1104}, {"violation_description": "PARK OR STAND ON SIDEWALK", "payment rate": 0.6853281853281853, "average fine $": 59, "count": 1036}, {"violation_description": "MISSING/NONCOMPLIANT FRONT AND/OR REAR PLATE", "payment rate": 0.322265625, "average fine $": 60, "count": 1024}, {"violation_description": "PARK ALLEY", "payment rate": 0.40981963927855714, "average fine $": 150, "count": 998}, {"violation_description": "SAFETY BELTS REQUIRED", "payment rate": 0.7125382262996942, "average fine $": 25, "count": 981}, {"violation_description": "3-7 AM SNOW ROUTE", "payment rate": 0.7115613825983313, "average fine $": 56, "count": 839}, {"violation_description": "PARK VEHICLE SOLE PURPOSE OF DISPLAYING FOR SALE", "payment rate": 0.1927710843373494, "average fine $": 100, "count": 664}, {"violation_description": "WINDOWS MISSING OR CRACKED BEYOND 6", "payment rate": 0.6059027777777778, "average fine $": 25, "count": 576}, {"violation_description": "PARK OR STAND ON PARKWAY", "payment rate": 0.7232323232323232, "average fine $": 59, "count": 495}, {"violation_description": "SPECIAL EVENTS RESTRICTION", "payment rate": 0.7748917748917749, "average fine $": 60, "count": 462}, {"violation_description": "TRUCK,MOTOR HOME, BUS BUSINESS STREET", "payment rate": 0.6907894736842105, "average fine $": 27, "count": 456}, {"violation_description": "TWO HEAD LAMPS REQUIRED VISIBLE 1000'", "payment rate": 0.5914221218961625, "average fine $": 25, "count": 443}, {"violation_description": "DISABLED CURB CUT", "payment rate": 0.7706422018348624, "average fine $": 75, "count": 436}, {"violation_description": "IMPROPER DISPLAY OF CITY STICKER", "payment rate": 0.7644110275689223, "average fine $": 30, "count": 399}, {"violation_description": "20'OF CROSSWALK", "payment rate": 0.72264631043257, "average fine $": 58, "count": 393}, {"violation_description": "NO PARK IN PRIVATE LOT", "payment rate": 0.582010582010582, "average fine $": 25, "count": 378}, {"violation_description": "REAR PLATE REQUIRED MOTORCYCLE/TRAILER", "payment rate": 0.5710227272727273, "average fine $": 59, "count": 352}, {"violation_description": "HAZARDOUS DILAPITATED VEHICLE", "payment rate": 0.23154362416107382, "average fine $": 69, "count": 298}, {"violation_description": "PARK OUTSIDE METERED SPACE", "payment rate": 0.5935251798561151, "average fine $": 49, "count": 278}, {"violation_description": "OBSTRUCTED OR IMPROPERLY TINTED WINDOWS", "payment rate": 0.5535055350553506, "average fine $": 156, "count": 271}, {"violation_description": "PARK OR STAND IN VIADUCT/UNDERPASS", "payment rate": 0.708502024291498, "average fine $": 75, "count": 247}, {"violation_description": "PARK/STAND ON BICYCLE PATH", "payment rate": 0.6567796610169492, "average fine $": 143, "count": 236}, {"violation_description": "PARK IN CITY LOT WHEN CLOSED", "payment rate": 0.7022222222222222, "average fine $": 47, "count": 225}, {"violation_description": "PARK OR STAND ON CITY PROPERTY", "payment rate": 0.41530054644808745, "average fine $": 48, "count": 183}, {"violation_description": "LAMPS BROKEN OR INOPERABLE", "payment rate": 0.5987654320987654, "average fine $": 25, "count": 162}, {"violation_description": "TRUCK TRAILOR/SEMI/TRAILER PROHIBITED", "payment rate": 0.4394904458598726, "average fine $": 125, "count": 157}, {"violation_description": "HAZARDOUS DILAPIDATED VEHICLE", "payment rate": 0.24324324324324326, "average fine $": 75, "count": 148}, {"violation_description": "TRUCK OR SEMI-TRAILER PROHIBITED", "payment rate": 0.5310344827586206, "average fine $": 125, "count": 145}, {"violation_description": "SNOW ROUTE: 2'' OF SNOW OR MORE", "payment rate": 0.7083333333333334, "average fine $": 60, "count": 144}, {"violation_description": "INDUSTRIAL PERMIT PARKING", "payment rate": 0.8333333333333334, "average fine $": 50, "count": 120}, {"violation_description": "NO PARK IN PUBLIC LOT", "payment rate": 0.2857142857142857, "average fine $": 48, "count": 119}, {"violation_description": "RED REAR LAMP REQUIRED VISIBLE 500'", "payment rate": 0.5565217391304348, "average fine $": 25, "count": 115}, {"violation_description": "REAR PLATE LIT AND LEGIBLE FOR 50'", "payment rate": 0.5636363636363636, "average fine $": 25, "count": 110}, {"violation_description": "OUTSIDE DIAGONAL MARKINGS", "payment rate": 0.7363636363636363, "average fine $": 45, "count": 110}, {"violation_description": "BURGLAR ALARM SOUNDING OVER 4 MINUTES", "payment rate": 0.7549019607843137, "average fine $": 41, "count": 102}, {"violation_description": "NON PYMT/NON-COM VEH PARKED IN COM LOADING ZONE", "payment rate": 0.45, "average fine $": 140, "count": 100}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+<p>I would bring chart 2. The reason that I like chart 2 is that you can clearly see the relationship of how increasing fine amounts leads to decreasing payment rates, but you also get the extra information of the number of tickets issued for each fine, so if the City Clerk would like to adjust the fine amount for a ticket, they can choose from the ones that are most frequently issued if they would like to influence revenue to the greatest extent possible.</p>
+<p><strong>3</strong> 1. Most violation types double in price if unpaid. • Does this hold for all violations? • If not, find all violations with at least 100 citations that do not double. How much does each ticket increase if unpaid?</p>
+<div id="9890590c" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>double <span class="op">=</span> df[(df[<span class="st">"fine_level1_amount"</span>] <span class="op">!=</span> <span class="fl">0.5</span><span class="op">*</span>df[<span class="st">"fine_level2_amount"</span>])]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#creating a new dataframe that contains the violation_description, the fine_level1, and fine_level2</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>double_value_counts <span class="op">=</span> double[<span class="st">"violation_description"</span>].value_counts()</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>double_value_counts <span class="op">=</span> double_value_counts.reset_index()</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co">#I needed to get the violation description and the fine amount for each group next to eachother in a quick way</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># using the mean was an easy way of doing that since the fine1 values are all the same for each group</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>mean_fine_level1 <span class="op">=</span> double.groupby(<span class="st">"violation_description"</span>)[<span class="st">"fine_level1_amount"</span>].mean()</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>mean_fine_level2 <span class="op">=</span> double.groupby(<span class="st">"violation_description"</span>)[<span class="st">"fine_level2_amount"</span>].mean()</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">#merging the variables together into a nice dataset</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>merged_df <span class="op">=</span> double_value_counts.merge(mean_fine_level1, on <span class="op">=</span> <span class="st">"violation_description"</span>)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>merged_df <span class="op">=</span> merged_df.merge(mean_fine_level2, on <span class="op">=</span> <span class="st">"violation_description"</span>)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>merged_df[merged_df[<span class="st">"count"</span>] <span class="op">&gt;</span> <span class="dv">100</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">violation_description</th>
+<th data-quarto-table-cell-role="th">count</th>
+<th data-quarto-table-cell-role="th">fine_level1_amount</th>
+<th data-quarto-table-cell-role="th">fine_level2_amount</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>PARK OR BLOCK ALLEY</td>
+<td>1643</td>
+<td>150.0</td>
+<td>250.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>DISABLED PARKING ZONE</td>
+<td>1026</td>
+<td>200.0</td>
+<td>250.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>SMOKED/TINTED WINDOWS PARKED/STANDING</td>
+<td>629</td>
+<td>250.0</td>
+<td>250.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>BLOCK ACCESS/ALLEY/DRIVEWAY/FIRELANE</td>
+<td>519</td>
+<td>150.0</td>
+<td>250.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ol start="2" type="1">
+<li><p>Many datasets implicitly contain information about how a case can progress. Draw a di- agram explaining the process of moving between the different values of notice_level (if you draw it on paper, take a picture and include the image in your write up). Draw a sec- ond diagram explaining the different values of ticket_queue. If someone contests their ticket and is found not liable, what happens to notice_level and to ticket_queue? Include this in your tree drawings above.</p></li>
+<li><p>Go back to your scatter plot from the previous section. We want to add labels to each dot (which conveniently you constructed in the previous step). Implement this in two ways: (a) label every dot with adjacent text or (b) put the text in a legend. Either way, you will find the same problem – there are too many labels and the plot is illegible. Revise the plots. First, do this the easy way, which is to pick the ten most commonly used violation descriptions and mark all the other dots as “Other”. Second, for (b), try to construct meaningful categories by marking violation descriptions which sound similar with a common label and a common color.</p></li>
+</ol>
+<p><strong>Extra Credit (max 5 points)</strong> 1. Which violation codes, if any, are associated with multiple violation descriptions? In these cases, using pandas, create a new column which records the most common violation description associated with this code. If there are any with multiple descriptions print the three codes with the most observations.</p>
+<ol start="2" type="1">
+<li>Above you made a diagram on paper to show how a case can progress. Al- though Vega-Lite cannot support tree layout plots like this, Vega can!. Make the digital version of your diagram using Vega. You can use the (online Vega con- sole](https://vega.github.io/editor/#/custom/vega). Submit your JSON as a separate file and submit your plot alongside your pset as a .png.</li>
+</ol>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

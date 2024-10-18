@@ -28,16 +28,12 @@ path = "c:/Users/danie/Documents/GitHub/student30538/problem_sets/ps2/data"
 os.chdir(path)
 
 df = pd.read_csv("parking_tickets_one_percent.csv")
-
+pd.options.mode.chained_assignment = None
 ```
 
 
  **Data cleaning continued**
  1. . For each column, how many rows are NA? Write a function which returns a two column data frame where each row is a variable, the first column of the data frame is the name of each variable, and the second column of the data frame is the number of times thatthe column is NA. Test your function. Then, report the results applied to the parking tickets data frame. There are several ways to do this, but we haven’t covered them yet in class, so you will need to work independently to set this up.
-
- ```{python}
-df.head()
- ```
 
 ```{python}
 def data_cleaning(data):
@@ -79,14 +75,21 @@ small_list3 = list(series3.loc[:, "index"])
 three = df.loc[small_list3]
 v_three = three["violation_description"].value_counts()
 
+print("hearing_disposition")
 print(v_three.head())
+
+print("notice_level")
 print(v_two.head())
+
+print("zipcode")
 print(v_one.head())
 ```
 
-The zipcode variable indicates the zipcode associated with the vehicle registration. This is an assumption, but I would guess that if the vehicle does not have an up to date registration. Therefore that would explain the lack of zipcode.
-According to the ProPublica article for notice_level, if there is no data, then that would indicate that no notice was sent to the vehicle owner.
-For the hearing_disposition, if the field is blank, then that would indicate that the ticket was not contested. 
+The zipcode variable indicates the zipcode associated with the vehicle registration. I would guess that if the vehicle does not have an up to date registration, is missing the registration sticker, or missing both registration sticker and plates, then when the officer writes the citation, there is no way for the officer to collect information on the zipcode that the car is registered to. So in these cases, there is a likelihood that the officer was not able to find enough identifying information to get a zipcode.
+
+According to the ProPublica article for notice_level, if there is no data, then that would indicate that no notice was sent to the vehicle owner. Therefore, these citations were not sent to the vehicle owner. 
+
+For the hearing_disposition, if the field is blank, then that would indicate that the ticket was not contested. Therefore for these fields, the vehicle owners did not contest the citation or there is no record of the citation.
 
 
  3. Some of the other articles on the propublica website discuss an increase in the dollar amount of the ticket for not having a city sticker. What was the old violation code and what is the new violation code?
@@ -98,7 +101,7 @@ sticker = df[(df["violation_description"] == "NO CITY STICKER OR IMPROPER DISPLA
 sticker["violation_code"].value_counts()
 ```
 
-The old code was **0964125**, and the new code was designated as **0964125B**
+The old code was **0964125**, and the new code was designated as **0964125B**. Not sure what the other value with 15 citations is.
 
  4. How much was the cost of an initial offense under each code? (You can ignore the ticket for a missing city sticker on vehicles over 16,000 pounds.)
 ```{python}
@@ -160,11 +163,13 @@ grouped["pre_post_increase"] = grouped["pre_post_increase"].replace({0:"Pre Incr
 tickets_graph = alt.Chart(grouped).mark_bar(
 ).transform_window(
     cumulative_sum = "sum(num)",).encode(
-    alt.X("yearmonth:O"
+    alt.X("year:O"
     ),
     alt.Y("cumulative_sum:Q"),
     color = alt.Color("pre_post_increase:N")
-)
+).properties(
+    width=400,
+    height = 200)
 
 tickets_graph
 ```
@@ -197,9 +202,9 @@ tickets_per_year = pd.DataFrame({
     "number_of_tickets": df_values
 })
 
-print(tickets_per_year)
 
-print((193300 * 200) - (193300 * 120))
+print(tickets_per_year)
+print(f"the expected revenue is {(193300 * 200) - (193300 * 120)}")
 
 ```
 
@@ -372,23 +377,35 @@ chart2 = alt.Chart(data).mark_point(filled = True).encode(
     alt.X("average fine $:Q"),
     alt.Y("payment rate:Q"),
     size = alt.Size("count"),
-    color = alt.Color("count", scale = alt.Scale(scheme = "greens"))
 )
 
 chart3 = alt.Chart(data).mark_bar().encode(
-    alt.X("average fine $:Q", sort = alt.EncodingSortField(field = "count")),
+    alt.X("average fine $:Q"),
     alt.Y("payment rate:Q"),
-    color = alt.Color("count", scale = alt.Scale(scheme = "viridis")))
+    color = alt.Color("violation_description"))
 
-chart1|chart2|chart3
-
-
+chart1 & chart2 & chart3
 ```
+
+
+Chart 1: Chart 1 is the most straightforward interpretation, where the relationships of average fine amount and payment rates is skewed to high payment rates for lower fines. 6/10
+
+Chart 2: Chart 2 gives us extra information relative to Chart 1, where we are now able to deduce the relative number of tickets issued for each violation description, along with the average fine and payment rate information carried over from Chart 1. 9/10
+
+Chart 3: Chart 3 is probably the worst of the three, as it is showing an individual bar for each of the violation descriptions. We are still getting the same information, in that we are able to see the relationships between average fine and payment rates, but the chart is too colorful, too messy, and many of the bars are overlapping, making it difficult to read the visual quickly. 2/10
+
 
 3. The City Clerk doesn’t understand regressions and only has time to look at one plot.
 Which plot are you going to bring to them and why?
 Understanding the structure of the data and summarizing it (Lecture 5, 20
 Points)
+
+```{python}
+chart2
+```
+
+I would bring chart 2. The reason that I like chart 2 is that you can clearly see the relationship of how increasing fine amounts leads to decreasing payment rates, but you also get the extra information of the number of tickets issued for each fine, so if the City Clerk would like to adjust the fine amount for a ticket, they can choose from the ones that are most frequently issued if they would like to influence revenue to the greatest extent possible. 
+
 
 **3** 
 1. Most violation types double in price if unpaid.
@@ -396,6 +413,25 @@ Points)
 • If not, find all violations with at least 100 citations that do not double. How much
 does each ticket increase if unpaid?
 
+```{python}
+double = df[(df["fine_level1_amount"] != 0.5*df["fine_level2_amount"])]
+
+#creating a new dataframe that contains the violation_description, the fine_level1, and fine_level2
+
+double_value_counts = double["violation_description"].value_counts()
+double_value_counts = double_value_counts.reset_index()
+
+#I needed to get the violation description and the fine amount for each group next to eachother in a quick way
+# using the mean was an easy way of doing that since the fine1 values are all the same for each group
+mean_fine_level1 = double.groupby("violation_description")["fine_level1_amount"].mean()
+mean_fine_level2 = double.groupby("violation_description")["fine_level2_amount"].mean()
+
+#merging the variables together into a nice dataset
+merged_df = double_value_counts.merge(mean_fine_level1, on = "violation_description")
+merged_df = merged_df.merge(mean_fine_level2, on = "violation_description")
+
+merged_df[merged_df["count"] > 100]
+```
 
 2. Many datasets implicitly contain information about how a case can progress. Draw a di-
 agram explaining the process of moving between the different values of notice_level (if
