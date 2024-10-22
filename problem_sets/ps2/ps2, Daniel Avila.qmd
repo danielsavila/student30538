@@ -137,7 +137,9 @@ alt.Chart(grouped).mark_bar(
 ).encode(
     alt.X("yearmonth:O"),
     alt.Y("cumulative_sum:Q")
-)
+).properties(
+    width=400,
+    height = 200)
 
 ```
 
@@ -450,15 +452,163 @@ used violation descriptions and mark all the other dots as “Other”. Second, 
 to construct meaningful categories by marking violation descriptions which sound similar
 with a common label and a common color.
 
-**Extra Credit (max 5 points)**
-1. Which violation codes, if any, are associated with multiple violation descriptions? In
-these cases, using pandas, create a new column which records the most common violation
-description associated with this code. If there are any with multiple descriptions print
-the three codes with the most observations.
+```{python}
+# documentation on adding labels
+# https://altair-viz.github.io/gallery/scatter_with_labels.html
 
+text = chart1.mark_text(
+    align='left',
+    baseline='middle'
+).encode(
+    text="violation_description"
+)
 
-2. Above you made a diagram on paper to show how a case can progress. Al-
-though Vega-Lite cannot support tree layout plots like this, Vega can!. Make the
-digital version of your diagram using Vega. You can use the (online Vega con-
-sole](https://vega.github.io/editor/#/custom/vega). Submit your JSON as a separate
-file and submit your plot alongside your pset as a .png.
+chart1 + text
+```
+
+```{python}
+#easy way
+data["other"] = data["violation_description"]
+data.loc[10:, "other"] = "other"
+
+text = chart1.mark_text(
+    align='left',
+    baseline='top'
+).encode(
+    text="other",
+    size = alt.value(5)
+)
+
+chart1 + text
+
+```
+
+```{python}
+#hard way
+#used chatgpt to create these lists quickly, rest was on my own
+
+expired_registration_plates = [
+    'EXPIRED PLATES OR TEMPORARY REGISTRATION',
+    'EXPIRED METER OR OVERSTAY',
+    'EXPIRED PLATE OR TEMPORARY REGISTRATION',
+    'EXPIRED METER CENTRAL BUSINESS DISTRICT',
+    'EXP. METER NON-CENTRAL BUSINESS DISTRICT'
+]
+
+street_cleaning_special_events = [
+    'STREET CLEANING',
+    'STREET CLEANING OR SPECIAL EVENT',
+    'SPECIAL EVENTS RESTRICTION'
+]
+
+residential_parking = [
+    'RESIDENTIAL PERMIT PARKING',
+    'TRUCK,RV,BUS, OR TAXI RESIDENTIAL STREET',
+    'TRUCK,MOTOR HOME, BUS BUSINESS STREET',
+    'INDUSTRIAL PERMIT PARKING'
+]
+
+parking_standing_prohibited = [
+    'PARKING/STANDING PROHIBITED ANYTIME',
+    'NO STANDING/PARKING TIME RESTRICTED',
+    'RUSH HOUR PARKING',
+    'STOP SIGN OR TRAFFIC SIGNAL',
+    'STAND, PARK, OR OTHER USE OF BUS LANE'
+]
+
+hydrant_crosswalk_sidewalk = [
+    "WITHIN 15' OF FIRE HYDRANT",
+    'PARK OR STAND ON CROSSWALK',
+    'PARK OR STAND ON SIDEWALK',
+    "20'OF CROSSWALK"
+]
+
+vehicle_plate_requirements = [
+    'REAR AND FRONT PLATE REQUIRED',
+    'MISSING/NONCOMPLIANT FRONT AND/OR REAR PLATE',
+    'NO CITY STICKER VEHICLE UNDER/EQUAL TO 16,000 LBS.',
+    'NO CITY STICKER OR IMPROPER DISPLAY',
+    'IMPROPER DISPLAY OF CITY STICKER',
+    'REAR PLATE REQUIRED MOTORCYCLE/TRAILER',
+    'NONCOMPLIANT PLATE(S)',
+    'HAZARDOUS DILAPITATED VEHICLE',
+    'HAZARDOUS DILAPIDATED VEHICLE',
+    'TRUCK TRAILOR/SEMI/TRAILER PROHIBITED',
+    'TRUCK OR SEMI-TRAILER PROHIBITED'
+]
+
+loading_zone_private_lot = [
+    'CURB LOADING ZONE',
+    'NON PYMT/NON-COM VEH PARKED IN COM LOADING ZONE',
+    'NO PARK IN PRIVATE LOT',
+    'NO PARK IN PUBLIC LOT',
+    'PARK OUTSIDE METERED SPACE'
+]
+
+obstruction_violations = [
+    'BLOCK ACCESS/ALLEY/DRIVEWAY/FIRELANE',
+    'PARK OR BLOCK ALLEY',
+    'OBSTRUCT ROADWAY',
+    'PARK OR STAND ON PARKWAY',
+    'PARK OR STAND ON BICYCLE PATH',
+    'PARK/STAND ON BICYCLE PATH'
+]
+
+miscellaneous_violations = [
+    'DOUBLE PARKING OR STANDING',
+    'SAFETY BELTS REQUIRED',
+    'WINDOWS MISSING OR CRACKED BEYOND 6',
+    'SMOKED/TINTED WINDOWS PARKED/STANDING',
+    'OBSTRUCTED OR IMPROPERLY TINTED WINDOWS',
+    'PARK VEHICLE SOLE PURPOSE OF DISPLAYING FOR SALE',
+    'LAMPS BROKEN OR INOPERABLE',
+    "TWO HEAD LAMPS REQUIRED VISIBLE 1000'",
+    'DISABLED CURB CUT',
+    'DISABLED PARKING ZONE',
+    'PARK OR STAND IN BUS/TAXI/CARRIAGE STAND',
+    'BURGLAR ALARM SOUNDING OVER 4 MINUTES',
+    "RED REAR LAMP REQUIRED VISIBLE 500'",
+    "REAR PLATE LIT AND LEGIBLE FOR 50'",
+    'PARK OR STAND IN VIADUCT/UNDERPASS',
+    'PARK IN CITY LOT WHEN CLOSED',
+    'PARK OR STAND ON CITY PROPERTY',
+    'OUTSIDE DIAGONAL MARKINGS',
+    'ABANDONED VEH. FOR 7 DAYS OR INOPERABLE',
+    "WRONG DIRECTION OR 12'' FROM CURB"
+]
+
+def classify_violation(violation):
+    if violation in expired_registration_plates:
+        return 'Expired Registration/Plates'
+    elif violation in street_cleaning_special_events:
+        return 'Street Cleaning/Special Events'
+    elif violation in residential_parking:
+        return 'Residential Parking'
+    elif violation in parking_standing_prohibited:
+        return 'Parking/Standing Prohibited'
+    elif violation in hydrant_crosswalk_sidewalk:
+        return 'Fire Hydrant/Crosswalk/Sidewalk'
+    elif violation in vehicle_plate_requirements:
+        return 'Vehicle/Plate Requirements'
+    elif violation in loading_zone_private_lot:
+        return 'Loading Zone/Private Lots'
+    elif violation in obstruction_violations:
+        return 'Obstruction Violations'
+    else:
+        return 'Miscellaneous Violations'
+
+classified_violations = [classify_violation(v) for v in data["violation_description"]]
+
+data["classified_violations"] = classified_violations
+
+text2 = chart1.mark_text(
+    align='left',
+    baseline='top'
+).encode(
+    text="classified_violations",
+    size = alt.value(5)
+)
+
+chart1 + text2
+
+```
