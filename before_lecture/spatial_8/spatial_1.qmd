@@ -315,9 +315,32 @@ poly_with_hole
 ## Do-pair-Share
 
 1.  Create a triangle
+
+```{python}
+point1 = Point(1, 1)
+point2 = Point(1, 2)
+point3 = Point(2, 1)
+
+triangle = Polygon([point1, point2, point3])
+triangle
+```
+
+
 2.  Create a square
+
+```{python}
+point4 = Point(2, 2)
+
+square = Polygon([point4, point3, point1, point2])
+square
+```
+
 3.  Create a circle (hint: look up the `buffer` method in `shapely`)
 
+```{python}
+circle = point1.buffer(5)
+circle.centroid
+```
 
 ## geo data in vectors: summary
 
